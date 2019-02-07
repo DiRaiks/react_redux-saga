@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import logo from './logo.svg'
+import './App.css'
 
 class App extends Component {
   render() {
@@ -25,4 +26,5 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapState = (state) => ({ ...state })
+export default connect(mapState)(App)

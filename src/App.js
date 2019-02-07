@@ -7,10 +7,12 @@ import { Side } from './components'
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header" />
-        <Side />
-        <Side />
+      <div className="app">
+        <header className="appHeader" />
+        <div className="appContent">
+            <Side />
+            <Side />
+        </div>
       </div>
     );
   }

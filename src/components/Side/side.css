@@ -3,6 +3,7 @@
     padding: 20px 30px;
     overflow-y: scroll;
     height: calc(100vh - 101px);
+    position: relative;
 }
 
 .stationWithBicycles {

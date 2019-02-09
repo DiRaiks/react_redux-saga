@@ -5,7 +5,7 @@ import * as actionTypes from './store/constants/actionTypes';
 import './App.css'
 import './assets/loader.css'
 
-import { Side } from './components'
+import { Side, Loader } from './components'
 
 class App extends Component {
 
@@ -57,13 +57,9 @@ class App extends Component {
             <div className="app">
                 <header className="appHeader" />
                 <div className="appContent">
-                    { this.props.rootFetching && (
-                        <div id="preloader">
-                            <div id="loader" />
-                        </div>
-                    )}
+                    { this.props.rootFetching && <Loader /> }
                     <Side header={ 'NetWorks' } renderList={ companys } />
-                    <Side header={ 'Bicycles' } renderList={ stations }/>
+                    <Side header={ 'Bicycles' } renderList={ stations } fetching={ this.props.stationFetching } />
                 </div>
             </div>
         );

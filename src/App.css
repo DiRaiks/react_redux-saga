@@ -3,7 +3,8 @@
   min-height: 100vh;
   display: flex;
   color: white;
-flex-direction: column}
+  flex-direction: column
+}
 
 .appHeader {
   height: 100px;
@@ -13,6 +14,7 @@ flex-direction: column}
 .appContent {
   display: flex;
   flex: 1;
+  position: relative;
 }
 
 .side:first-of-type {

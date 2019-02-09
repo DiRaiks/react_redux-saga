@@ -16,7 +16,7 @@ const rootReducer = (state = initialState, action) => {
         case actionTypes.API_CALL_NETWORKS_SUCCESS:
             return {
                 ...state,
-                rootFetching: true,
+                rootFetching: false,
                 networks: action.networks,
                 stations: action.stations,
                 selectedNetwork: action.selectedNetwork,

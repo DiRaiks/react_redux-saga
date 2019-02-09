@@ -1,7 +1,7 @@
-import Bicycle from './Bicycle/Bicycle'
 import Side from './Side/Side'
+import Loader from './Loader/Loader'
 
 export {
-    Bicycle,
     Side,
+    Loader,
 }

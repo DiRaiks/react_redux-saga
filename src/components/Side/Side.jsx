@@ -11,7 +11,12 @@ const Side = (props) => (
             { props.header }
         </header>
         { props.fetching && <Loader isSmall={ true } /> }
-        { !props.fetching && props.renderList }
+        { !props.renderList.length && (
+            <div>
+                <h3>Stations Not Found</h3>
+            </div>
+        )}
+        { !props.fetching && props.renderList.length > 0 && props.renderList }
     </div>
 )
 

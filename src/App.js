@@ -39,14 +39,14 @@ class App extends Component {
     }
 
     createRenderStationsList() {
-         return this.props.stations.map(station =>
-             <li
-                 key={ station.id }
-                 className={ station.free_bikes > 0 ? 'stationWithBicycles' : {} }
-             >
-                 (Free bikes: { station.free_bikes }) { station.name }
-             </li>
-         )
+        return this.props.stations.map(station =>
+            <li
+                key={ station.id }
+                className={ station.free_bikes > 0 ? 'stationWithBicycles' : {} }
+            >
+                (Free bikes: { station.free_bikes }) { station.name }
+            </li>
+        )
     }
 
     render() {
@@ -59,7 +59,7 @@ class App extends Component {
                 <div className="appContent">
                     { this.props.rootFetching && <Loader /> }
                     <Side header={ 'NetWorks' } renderList={ companys } />
-                    <Side header={ 'Bicycles' } renderList={ stations } fetching={ this.props.stationFetching } />
+                    <Side header={ 'Stations' } renderList={ stations } fetching={ this.props.stationFetching } />
                 </div>
             </div>
         );

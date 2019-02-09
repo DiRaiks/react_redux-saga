@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export function* watcherSaga() {
     yield takeEvery(actionTypes.API_CALL_NETWORKS, workerNetworksSaga)
-    yield takeEvery(actionTypes.API_CALL_BICYCLES, workerStationsSaga)
+    yield takeEvery(actionTypes.API_CALL_STATIONS, workerStationsSaga)
 }
 
 function getNetworks() {
@@ -48,14 +48,13 @@ function* workerStationsSaga(action) {
         const stations = yield call(() => getStations(selectedNetwork));
 
         yield put({
-            type: actionTypes.API_CALL_BICYCLES_SUCCESS,
+            type: actionTypes.API_CALL_STATIONS_SUCCESS,
             stations,
             selectedNetwork,
         })
     } catch(error) {
-        console.log(error)
         yield put({
-            type: actionTypes.API_CALL_BICYCLES_FAIL,
+            type: actionTypes.API_CALL_STATIONS_FAIL,
             error
         })
     }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import * as actionTypes from './store/constants/actionTypes';
 import './App.css'
+import './assets/loader.css'
 
 import { Side } from './components'
 
@@ -14,7 +15,7 @@ class App extends Component {
 
     changeCompany = (key) => {
         this.props.dispatch({
-            type: actionTypes.API_CALL_BICYCLES,
+            type: actionTypes.API_CALL_STATIONS,
             id: key,
         })
     }
@@ -30,7 +31,7 @@ class App extends Component {
             <li
                 key={ network.id }
                 className={ network.id === this.props.selectedNetwork ? 'selectedCompany' : '' }
-                onClick={() => this.changeCompany(network.id)}
+                onClick={ this.changeCompany.bind(this, network.id) }
             >
                 { this.checkCompany(network.company) } ({ network.country } { network.city })
             </li>
@@ -56,6 +57,11 @@ class App extends Component {
             <div className="app">
                 <header className="appHeader" />
                 <div className="appContent">
+                    { this.props.rootFetching && (
+                        <div id="preloader">
+                            <div id="loader" />
+                        </div>
+                    )}
                     <Side header={ 'NetWorks' } renderList={ companys } />
                     <Side header={ 'Bicycles' } renderList={ stations }/>
                 </div>

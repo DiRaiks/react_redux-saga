@@ -7,40 +7,12 @@ import './App.css'
 import { Side } from './components'
 
 class App extends Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            selectedCompany: null,
-            bicyclesArray: [],
-        }
-    }
 
     componentDidMount() {
         this.props.dispatch({ type: actionTypes.API_CALL_NETWORKS })
     }
 
-    static getDerivedStateFromProps(props, state) {
-        console.log('get derived', props.networks, props, state, )
-        if (props.networks && !state.selectedCompany) {
-            console.log('get derived if')
-            let firstEl
-            for (let key in props.networks) {
-                firstEl = key
-                break
-            }
-            return {
-                selectedCompany: firstEl,
-                bicyclesArray: [],
-            }
-        }
-        return null
-    }
-
     changeCompany = (key) => {
-        this.setState({
-            selectedCompany: key,
-        })
         this.props.dispatch({
             type: actionTypes.API_CALL_BICYCLES,
             id: key,
@@ -59,7 +31,7 @@ class App extends Component {
             companys.push(
                 <li
                     key={ key }
-                    style={ key === this.state.selectedCompany ? { background: 'green' } : {} }
+                    style={ key === this.props.selectedNetwork ? { background: 'green' } : {} }
                     onClick={() => this.changeCompany(key)}
                 >
                     { this.checkCompany(networks[ key ].company) } ({ networks[ key ].location.country } { networks[ key ].location.city })
@@ -69,9 +41,9 @@ class App extends Component {
         return companys
     }
 
-    createRenderStationsList(stations) {
-         return this.props.bicycles.stations && this.props.bicycles.stations.map(item =>
-             <li style={item.free_bikes > 0 ? { background: 'red' } : {}}>(Free bikes: { item.free_bikes }) { item.name }</li>
+    createRenderStationsList() {
+         return this.props.stations.map(station =>
+             <li key={ station.id } style={station.free_bikes > 0 ? { background: 'red' } : {}}>(Free bikes: { station.free_bikes }) { station.name }</li>
          )
     }
 
@@ -84,8 +56,8 @@ class App extends Component {
             <div className="app">
                 <header className="appHeader" />
                 <div className="appContent">
-                    <Side header={ 'NetWorks' } companys={ companys } />
-                    <Side header={ 'Bicycles' } companys={ stations }/>
+                    <Side header={ 'NetWorks' } renderList={ companys } />
+                    <Side header={ 'Bicycles' } renderList={ stations }/>
                 </div>
             </div>
         );

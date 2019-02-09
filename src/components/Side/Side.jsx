@@ -8,13 +8,13 @@ const Side = (props) => (
         <header className="sideHeader">
             { props.header }
         </header>
-        { props.companys }
+        { props.renderList }
     </div>
 )
 
 Side.propTypes = {
     header: PropTypes.string.isRequired,
-    companys: PropTypes.array.isRequired,
+    renderList: PropTypes.array.isRequired,
 }
 
 export default Side

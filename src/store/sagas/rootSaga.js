@@ -12,25 +12,29 @@ function getNetworks() {
     return axios({
         method: 'get',
         url: 'https://api.citybik.es/v2/networks?fields=id,company,location'
-    });
+    }).then(response => response.data.networks);
 }
 
 function getStations(id) {
     return axios({
         method: 'get',
         url: `https://api.citybik.es/v2/networks/${ id }`
-    });
+    }).then(response => response.data.network.stations);
 }
 
 function* workerNetworksSaga() {
     try {
-        const response = yield call(getNetworks);
+        const networks = yield call(getNetworks);
         // const networks = filterBicycles(response.data.networks)
-        const networks = filterNetworks(response.data.networks)
+        const filteredNetworks = filterNetworks(networks)
+        const selectedNetwork = getFirstNetworkId(filteredNetworks)
+        const stations = yield call(getStations, selectedNetwork)
 
         yield put({
             type: actionTypes.API_CALL_NETWORKS_SUCCESS,
-            networks,
+            networks: filteredNetworks,
+            stations,
+            selectedNetwork,
         })
     } catch(error) {
         yield put({
@@ -43,13 +47,13 @@ function* workerNetworksSaga() {
 function* workerStationsSaga(action) {
     console.log('ACTION', action)
     try {
-        const response = yield call(() => getStations(action.id));
-        // const networks = filterBicycles(response.data.networks)
-        const bicycles = response.data.network
+        const selectedNetwork = action.id
+        const stations = yield call(() => getStations(selectedNetwork));
 
         yield put({
             type: actionTypes.API_CALL_BICYCLES_SUCCESS,
-            bicycles,
+            stations,
+            selectedNetwork,
         })
     } catch(error) {
         console.log(error)
@@ -60,50 +64,22 @@ function* workerStationsSaga(action) {
     }
 }
 
-function filteredStantion(stantions) {
-
+function getFirstNetworkId(networks) {
+    let firstEl
+    for (let key in networks) {
+        firstEl = key
+        break
+    }
+    return firstEl
 }
 
 function filterNetworks(networks) {
-
-    // let networks = bicycles.map(item => {
-    //     return item.company
-    // })
-    //     .reduce(function(a, b){
-    //     return a.concat(b);
-    // }, []);
-    // return unique(networks)
-
-    // let filteredNetworks = bicycles.reduce((arr, bicycle) => {
-    //     if (arr[ bicycle.location.country ]) {
-    //         arr[ bicycle.location.country ].push(bicycle)
-    //         return arr
-    //     }
-    //     arr[ bicycle.location.country ] = [ bicycle ]
-    //     return arr
-    // }, {})
-    // return filteredNetworks
-
     let filteredNetworks = networks.reduce((arr, network) => {
         if (arr[ network.id]) return arr
         arr[ network.id ] = network
         return arr
     }, {})
-    console.log(filteredNetworks)
     return filteredNetworks
-
-    // let cities = citiesArray.reduce((acc, city) => {
-    //     if (acc.map[city.VALUE]) // если данный город уже был
-    //         return acc; // ничего не делаем, возвращаем уже собранное
-    //
-    //     acc.map[city.VALUE] = true; // помечаем город, как обработанный
-    //     acc.cities.push(city); // добавляем объект в массив городов
-    //     return acc; // возвращаем собранное
-    // }, {
-    //     map: {}, // здесь будут отмечаться обработанные города
-    //     cities: [] // здесь конечный массив уникальных городов
-    // })
-    //     .cities; // получаем конечный массив
 }
 
 function unique(arr) {

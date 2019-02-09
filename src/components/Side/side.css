@@ -1,6 +1,8 @@
 .side {
     flex: 50%;
     padding: 20px 30px;
+    overflow-y: scroll;
+    height: calc(100vh - 101px);
 }
 
 

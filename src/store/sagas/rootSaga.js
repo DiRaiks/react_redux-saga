@@ -2,7 +2,6 @@ import { takeEvery, call, put } from 'redux-saga/effects';
 import * as actionTypes from '../constants/actionTypes';
 import axios from 'axios'
 
-//watcher
 export function* watcherSaga() {
     yield takeEvery(actionTypes.API_CALL_NETWORKS, workerNetworksSaga)
     yield takeEvery(actionTypes.API_CALL_BICYCLES, workerStationsSaga)
@@ -26,7 +25,7 @@ function* workerNetworksSaga() {
     try {
         const networks = yield call(getNetworks);
         const filteredNetworks = filterNetworks(networks)
-        const selectedNetwork = getFirstNetworkId(filteredNetworks)
+        const selectedNetwork = filteredNetworks[0].id
         const stations = yield call(getStations, selectedNetwork)
 
         yield put({
@@ -44,7 +43,6 @@ function* workerNetworksSaga() {
 }
 
 function* workerStationsSaga(action) {
-    console.log('ACTION', action)
     try {
         const selectedNetwork = action.id
         const stations = yield call(() => getStations(selectedNetwork));
@@ -63,26 +61,13 @@ function* workerStationsSaga(action) {
     }
 }
 
-function getFirstNetworkId(networks) {
-    let firstEl
-    for (let key in networks) {
-        firstEl = key
-        break
-    }
-    return firstEl
-}
-
 function filterNetworks(networks) {
-    let filteredNetworks = networks.reduce((arr, network) => {
-        if (arr[ network.id]) return arr
-        arr[ network.id ] = network
-        return arr
-    }, {})
-    return filteredNetworks
-}
-
-function unique(arr) {
-    let obj = {}
-    arr.forEach(item => obj[ item ] = true)
-    return Object.keys(obj)
+    return networks.map(network => {
+        return {
+            id: network.id,
+            company: network.company,
+            country: network.location.country,
+            city: network.location.city,
+        }
+    })
 }

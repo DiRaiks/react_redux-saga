@@ -5,6 +5,9 @@
     height: calc(100vh - 101px);
 }
 
+.stationWithBicycles {
+    background: green;
+}
 
 .sideHeader {
     height: 40px;

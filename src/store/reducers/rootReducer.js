@@ -3,7 +3,7 @@ import * as actionTypes from '../constants/actionTypes'
 const initialState = {
     fetching: false,
     error: null,
-    networks: null,
+    networks: [],
     stations: [],
     selectedNetwork: null,
 }

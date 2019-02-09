@@ -25,31 +25,31 @@ class App extends Component {
         return company
     }
 
-    createRenderCompanysList(networks) {
-        let companys= []
-        for (let key in networks) {
-            companys.push(
-                <li
-                    key={ key }
-                    style={ key === this.props.selectedNetwork ? { background: 'green' } : {} }
-                    onClick={() => this.changeCompany(key)}
-                >
-                    { this.checkCompany(networks[ key ].company) } ({ networks[ key ].location.country } { networks[ key ].location.city })
-                </li>
-            )
-        }
-        return companys
+    createRenderCompanysList() {
+        return this.props.networks.map(network =>
+            <li
+                key={ network.id }
+                className={ network.id === this.props.selectedNetwork ? 'selectedCompany' : '' }
+                onClick={() => this.changeCompany(network.id)}
+            >
+                { this.checkCompany(network.company) } ({ network.country } { network.city })
+            </li>
+        )
     }
 
     createRenderStationsList() {
          return this.props.stations.map(station =>
-             <li key={ station.id } style={station.free_bikes > 0 ? { background: 'red' } : {}}>(Free bikes: { station.free_bikes }) { station.name }</li>
+             <li
+                 key={ station.id }
+                 className={ station.free_bikes > 0 ? 'stationWithBicycles' : {} }
+             >
+                 (Free bikes: { station.free_bikes }) { station.name }
+             </li>
          )
     }
 
     render() {
-        let networks = this.props.networks || {}
-        let companys = this.createRenderCompanysList(networks)
+        let companys = this.createRenderCompanysList()
         let stations = this.createRenderStationsList()
 
         return (

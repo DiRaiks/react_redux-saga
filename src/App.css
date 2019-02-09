@@ -18,3 +18,7 @@ flex-direction: column}
 .side:first-of-type {
   border-right: 1px solid white;
 }
+
+.selectedCompany {
+  background: red;
+}

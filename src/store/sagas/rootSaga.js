@@ -25,7 +25,6 @@ function getStations(id) {
 function* workerNetworksSaga() {
     try {
         const networks = yield call(getNetworks);
-        // const networks = filterBicycles(response.data.networks)
         const filteredNetworks = filterNetworks(networks)
         const selectedNetwork = getFirstNetworkId(filteredNetworks)
         const stations = yield call(getStations, selectedNetwork)
